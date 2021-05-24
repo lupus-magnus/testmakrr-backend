@@ -1,0 +1,107 @@
+##########################  O DESAFIO   ##########################
+
+Backend Developer Junior Challenge
+
+Nosso teste consiste em um cadastro de provas. Cada prova tem N questões e cada questão tem N alternativas, onde 1 ou mais alternativas são corretas.
+Pré-requisitos
+
+    Provas:
+        Campos:
+            Título
+        Tela de impressão da prova com todas as questões e alternativas.
+    Questões:
+        Campos:
+            Número da questão
+            Descrição
+    Alternativas:
+        Campos:
+            Texto
+            Alternativa correta?
+
+Stack
+
+    Javascript / Node.js
+    Frameworks a sua escolha.
+    Banco de dados a sua escolha.
+
+O que vamos avaliar?
+
+    Organização do projeto.
+    Padrões de desenvolvimento.
+
+Instruções
+
+    Desenvolva o projeto, seguindo os requisitos desse documento.
+    Vamos apreciar muito um README com o passo a passo para rodar o projeto.
+    Suba o seu projeto para o Github e libere acesso para os usuários rferro e jcbombardelli.
+
+########################## ESTRUTURA ##########################
+
+
+Basicamente: index (GET => Formulário para fazer prova e POST => Envia a prova para o banco de dados e retorna um componente de sucesso ou fracasso) e '/:_id' (GET =>
+Retorna a prova corrigida ou não)
+
+
+########################## Organização da Prova ##########################
+
+    //Uma prova genérica teria a aparência abaixo
+    {
+        id: 098139028831, <= Unix timestamp é uma boa maneira de controlar tudo
+        title: "P1: Organização das Indústrias",
+        testUrl: "http://gama-testmaker.com/098139028831",
+        testAnswersUrl: ""http://gama-testmaker.com/answers/098139028831",
+        
+        questions: [
+        
+        {
+            questionNumber: 1,
+            questionData: {
+                description: "Quem sabe mais sobre a cidade dos anjos?"
+                options: [
+                    a: {text: "Eu sou a alternativa a", value: true},
+                    b: {text: "Eu sou a alternativa b", value: false},
+                    c: {text: "Eu sou a alternativa c", value: false}
+                ]
+            }
+        }
+
+        ]
+     
+
+    }
+
+
+
+
+########################## DIARIO DE BORDO ################################
+
+19/MAI/2021 - 02:18
+Consegui fazer rodar o back e front no mesmo app. Ainda preciso conferir se isso vai dar certo em produção. Falta também setar direitinho os .env da vida.
+
+Em meu último problema, parece que há questões de assincronismo no meu objeto. Ele está sendo mal gerado por conta disso, é necessário uma atenção especial à forma como é recebido e tratado o payload. Talvez envolver tudo numa promise seja a solução.
+
+
+19/MAI/2021 - 18:11
+Acho que está mais relacionado com os modelos do Mongo mesmo. Estou com o pensamento de deixar o modelamento de dados pra lá e só atuar mesmo diretamente nos documentos (sem modelo certinho).
+
+20/MAI/2021 - 00:48
+Consegui resolver o problema do modelamento sem abrir mão dele. Nesse momento acabo de conseguir fazer nossa primeira operação de sucesso com o MongoDB remoto. Estou feliz. Vou dar uma refatorada agora pra deixar num pseudo modelo MVC bonitinho.
+
+20/MAI/2021 - 02:35
+Com a parte do backend resolvida e devidamente modularizada com arquitetura manuntenível, comecei a trabalhar no front. Fiz um template bonitinho para inserir o titulo da prova, agora falta trabalhar no form de questões. Mesmo assim, acho que vou primeiro trabalhar na pagina de display da prova, pra depois voltar nesse form. Parece o certo a se fazer.
+
+20/MAI/2021 - 03:44
+É... Fomos bem longe hoje. Apesar de ter conseguido fazer o roteamento e a chamada para a api a partir do front, a tal da política referrer está me quebrando. Se tento passar o id por path do front, dá problema com ela e me bloqueiam. Se escondido da url e passado por outro lugar, até que dá certo, mas perde a graça do que eu queria fazer. Talvez então se eu fizer por cookies, salvar o idzinho num cookie e usá-lo pra fazer a requisição do banco de dados... Dessa forma o url seria fixo. Amanhã eu tento isso.
+
+21/MAI/2021 - 00:45
+Consegui resolver a questão do referrer. Na verdade nem era isso, eu mesmo que fiz uma besteira qualquer durante a desestruturação de um objeto que deu numa cadeia longa de errors. O que o cansaço não faz.
+De qualquer forma, hoje estou já vendo a formatação da prova recebida no front. Acredito que vai facilitar o trabalho no React se as opções de cada questão vierem dentro de uma lista, ao invés de um objeto. Não há necessidade e nem faz sentido que sejam um objeto.
+
+21/MAI/2021 - 10:25
+Hoje vou passar o dia nesse projeto. As metas mais urgentes são acertar o front do get exam e o formulário e lógica do form de questões. Vamo que vamo.
+
+22/MAI/2021 - 22:45
+Ainda não terminei o front. Na verdade, percebi que o trabalho que me dei com ele é bem maior do que a proposta inicial. Estava olhando novamente o meu back e estou satisfeito com ele, tô achando bem estruturado. A prova é só de back, mas eu quis tanto fazer uma solução completa... E agora tô preocupado se o enunciado está sendo bem satisfeito por mim. Espero que sim.
+
+23/MAI/2021 - 15:41
+Terminei toda a lógica de adicionar questão por questão. Falta fazer a lógica do Finalizar prova, que exige o envio da prova completa para o servidor. Acho que dá pra transferir o titulo da prova para o questionForm via props, e a partir daí já acabar com tudo lá dentro mesmo. Fazer um service externo da chamada post na api e Brasil acima de tudo. Depois disso vai estar tudo pronto de cabo a rabo, acho que cabe uma documentação do back no swagger se eu conseguir.
